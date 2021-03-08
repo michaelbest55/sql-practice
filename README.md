@@ -1,0 +1,1 @@
+This repo is a starting point for my learning path in the database world. 

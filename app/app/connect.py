@@ -50,7 +50,3 @@ if __name__ == '__main__':
         add_new_row(db, "profile", profile)
 
     logger.debug("Finished program")
-    # while True:
-    #     add_new_row()
-    #     print('The last value inserted is: {}'.format(get_last_row()))
-    #     time.sleep(5)

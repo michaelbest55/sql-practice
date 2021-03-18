@@ -9,11 +9,11 @@ services:
       - "5432:5432"
   python_db:
     build: .
-    command: python connect.py
+#    command: python connect.py
     env_file:
       - .env
     volumes:
-      - .:/code
+      - ./app:/app
 #    ports:
 #      - "8000:8000"
     depends_on:

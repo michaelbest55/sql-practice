@@ -7,4 +7,4 @@ RUN python -m pip install --upgrade pip
 RUN python -m pip install --no-cache-dir -r requirements.txt
 
 COPY /app /app
-CMD ["python", "connect.py"]
+CMD sleep 5; alembic upgrade head; python app/connect.py

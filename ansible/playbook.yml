@@ -1,0 +1,45 @@
+- hosts: all
+  become: yes
+  become_user: root
+  become_method: sudo
+  tasks:
+    - name: Enable docker for amazon linux 2
+      shell: "amazon-linux-extras enable docker"
+      become: yes
+
+    - name: Update yum packages
+      yum:
+        name: '*'
+        state: latest
+
+    - name: Install docker
+      yum:
+        name: docker
+        state: latest
+ 
+    - name: Enable Docker
+      service: 
+        name: docker 
+        enabled: yes
+        state: started
+    
+    - name: Add ec2-user to docker group
+      user:
+        name: ec2-user
+        groups: docker
+        append: yes
+
+    - name: Download docker-compose binary
+      get_url: 
+        url: "https://github.com/docker/compose/releases/latest/download/docker-compose-{{ ansible_system }}-{{ ansible_userspace_architecture }}"
+        dest: /usr/local/bin/docker-compose
+        mode: '0755'
+
+    - name: copying kafka docker-compose files
+      become: true 
+      copy:
+        src: ./debezium_files/
+        dest: /home/ec2-user
+        owner: ec2-user
+        group: ec2-user       
+        mode: 0744

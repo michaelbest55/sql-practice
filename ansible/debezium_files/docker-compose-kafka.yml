@@ -1,0 +1,30 @@
+version: '2'
+services:
+  zookeeper:
+    image: debezium/zookeeper:${DEBEZIUM_VERSION}
+    ports:
+     - 2181:2181
+     - 2888:2888
+     - 3888:3888
+  kafka:
+    image: debezium/kafka:${DEBEZIUM_VERSION}
+    ports:
+     - 9092:9092
+     - 19092:19092
+    links:
+     - zookeeper
+    environment:
+     - ZOOKEEPER_CONNECT=zookeeper:2181
+     - KAFKA_LISTENERS=INTER_BROKER://kafka:29092,INTERNAL://kafka:9092,EXTERNAL://kafka:19092
+     - KAFKA_ADVERTISED_LISTENERS=INTER_BROKER://kafka:29092,INTERNAL://localhost:9092,EXTERNAL://${PUBLIC_IP}:19092
+     - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=INTER_BROKER:PLAINTEXT,INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+     - KAFKA_INTER_BROKER_LISTENER_NAME=INTER_BROKER
+
+  postgres:
+    image: debezium/example-postgres:${DEBEZIUM_VERSION}
+    ports:
+     - 5432:5432
+    environment:
+     - POSTGRES_USER=postgres
+     - POSTGRES_PASSWORD=postgres
+

@@ -9,6 +9,7 @@ variable "aws_region" {
 variable "owner" {
   description = "Configuration owner"
   type        = string
+  default     = "kafka-cdc"
 }
  
 variable "aws_region_az" {
